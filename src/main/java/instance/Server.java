@@ -1,5 +1,6 @@
 package instance;
 
+import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
 /**
@@ -8,6 +9,6 @@ import com.hazelcast.core.HazelcastInstance;
 public class Server {
 
     public static HazelcastInstance instance(){
-        return null;
+        return Hazelcast.newHazelcastInstance();
     }
 }
