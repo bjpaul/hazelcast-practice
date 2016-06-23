@@ -1,8 +1,6 @@
 package instance;
 
 
-import com.hazelcast.client.HazelcastClient;
-import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.core.HazelcastInstance;
 
 /**
@@ -10,8 +8,7 @@ import com.hazelcast.core.HazelcastInstance;
  */
 public class Client {
     public static void main(String[] args){
-        ClientConfig clientConfig = new ClientConfig();
-        HazelcastInstance hazelcastInstance = HazelcastClient.newHazelcastClient(clientConfig);
+        HazelcastInstance hazelcastInstance = ClientInstance.instance();
         while (true){
             try {
                  System.out.println("Receive ==>> " + hazelcastInstance.getQueue("testQueue").take());
