@@ -3,11 +3,13 @@ package instance;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.LifecycleEvent;
+import com.hazelcast.core.LifecycleListener;
 
 /**
  * Created by bijoy on 16/6/16.
  */
-public class ClientInstance{
+public class ClientInstance implements LifecycleListener {
     private static ClientConfig clientConfig ;
     private static HazelcastInstance hazelcastInstance ;
 
@@ -40,4 +42,11 @@ public class ClientInstance{
         return clientConfig;
     }
 
+    @Override
+    public void stateChanged(LifecycleEvent event) {
+        System.out.println("Client -> " + event);
+        if(event.getState().equals(LifecycleEvent.LifecycleState.SHUTDOWN)){
+            instance();
+        }
+    }
 }
