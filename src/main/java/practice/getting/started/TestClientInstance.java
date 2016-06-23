@@ -1,4 +1,4 @@
-package getting.started;
+package practice.getting.started;
 
 import instance.Client;
 
