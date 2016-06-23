@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+jar {
+    baseName = 'hazelcast-practice'
+    version =  '0.1.0'
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("com.hazelcast:hazelcast:3.6.3")
+    compile("com.hazelcast:hazelcast-client:3.6.3")
+}
