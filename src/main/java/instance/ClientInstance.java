@@ -37,8 +37,6 @@ public class ClientInstance implements LifecycleListener {
                 .setName("intellimeet")
                 .setPassword("june");
         clientConfig.getNetworkConfig()
-                .addAddress("192.168.1.101")
-                .addAddress("192.168.1.102")
                 .setConnectionAttemptLimit(5) // by default 2
                 .setConnectionAttemptPeriod(1000) // by default 3000 ms
                 .setConnectionTimeout(1000); // by default 5000 ms
