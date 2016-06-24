@@ -52,6 +52,9 @@ public class Student implements Serializable, Comparable<Student>{
     public void setTotalMarks(double totalMarks) {
         this.totalMarks = totalMarks;
     }
+    public void setTotalMarks() {
+        this.totalMarks = (this.getMarksInComp()+this.getMarksInMath()) / 2;
+    }
 
     @Override
     public int compareTo(Student s) {
