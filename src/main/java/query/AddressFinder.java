@@ -4,12 +4,18 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.core.Member;
 import com.hazelcast.core.Partition;
+import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.Predicates;
 import instance.ClientInstance;
 import query.dao.AddressDao;
 import query.data.Address;
+import query.filter.CitySorter;
+import query.filter.Order;
+import query.filter.ZipCodeSorter;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
 
 /**
@@ -19,10 +25,13 @@ public class AddressFinder {
     private static HazelcastInstance hazelcastInstance = ClientInstance.instance();
 
     public static void main(String[] args) {
-        predicateSol1();
-        predicateSol2();
-        predicateSol3();
-        conventionalSol3();
+//        predicateSol1();
+//        predicateSol2();
+        predicateSol2(new CitySorter(Order.DESC), 5);
+        predicateSol2(new ZipCodeSorter(Order.ASC),5);
+        predicateSol2(5);
+//        predicateSol3();
+//        conventionalSol3();
     }
 
     public static void predicateSol1() {
@@ -45,6 +54,34 @@ public class AddressFinder {
         System.out.println("Starting...");
         long start = System.currentTimeMillis();
         for (Address address : addressIMap.values(predicate)) {
+            System.out.println(printAddress(address));
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("Total time taken " + (end - start));
+    }
+
+    public static void predicateSol2(int pageSize) {
+        System.out.println("< ------------- Sol2 ------------- >");
+        IMap<String, Address> addressIMap = hazelcastInstance.getMap("cityAddress");
+        Predicate<String, Address> predicate = AddressDao.find("city", "Mumbai", "Kolkata", "Delhi");
+        System.out.println("Starting...");
+        long start = System.currentTimeMillis();
+        PagingPredicate pagingPredicate = new PagingPredicate(predicate,pageSize);
+        for (Address address : addressIMap.values(pagingPredicate)) {
+            System.out.println(printAddress(address));
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("Total time taken " + (end - start));
+    }
+
+    public static void predicateSol2(Comparator comparator, int pageSize) {
+        System.out.println("< ------------- Sol2 ------------- >");
+        IMap<String, Address> addressIMap = hazelcastInstance.getMap("cityAddress");
+        Predicate<String, Address> predicate = AddressDao.find("city", "Mumbai", "Kolkata", "Delhi");
+        System.out.println("Starting...");
+        long start = System.currentTimeMillis();
+        PagingPredicate pagingPredicate = new PagingPredicate(predicate, comparator, pageSize);
+        for (Address address : addressIMap.values(pagingPredicate)) {
             System.out.println(printAddress(address));
         }
         long end = System.currentTimeMillis();

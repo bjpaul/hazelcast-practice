@@ -37,11 +37,6 @@ public class Client {
             e.printStackTrace();
         }
 
-        IMap<String, Address> addressIMap = hazelcastInstance.getMap("cityAddress");
-
-        for(Map.Entry<String, Address> entry : addressIMap.entrySet()){
-            System.out.println(entry);
-        }
     }
 
     public static Runnable addZipCodes(final String city){
@@ -49,7 +44,7 @@ public class Client {
             IMap<String, Address> addressIMap = hazelcastInstance.getMap("cityAddress");
             @Override
             public void run() {
-                for(int i = 110001; i < 210010; i++){
+                for(int i = 110001; i < 110111; i++){
                     addressIMap.put(city+" -> "+i, new Address(i, city));
                 }
             }
