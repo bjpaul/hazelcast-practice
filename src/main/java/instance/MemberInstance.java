@@ -44,12 +44,6 @@ public class MemberInstance {
             config.getGroupConfig()
                     .setName("intellimeet")
                     .setPassword("june");
-            JoinConfig joinConfig = config.getNetworkConfig().getJoin();
-            joinConfig.getMulticastConfig()
-                    .setEnabled(false);
-            joinConfig.getTcpIpConfig()
-                    .setEnabled(true)
-                    .addMember("localhost");
             config.getMemberAttributeConfig()
                     .setStringAttribute("user", System.getProperty("user.name"));
             return config;
