@@ -3,12 +3,10 @@ package instance;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.hazelcast.map.AbstractEntryProcessor;
 import data.Student;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 /**
@@ -24,9 +22,20 @@ public class Client {
             student = new Student("NAME "+i, random.nextInt(100), random.nextInt(100));
             studentIMap.put(i, student);
         }
+        studentIMap.executeOnEntries(new EmployeeRaiseEntryProcessor());
         Collection<Student> students = studentIMap.values();
         Collections.sort((List)students);
         System.out.println(students);
+    }
+
+    private static class EmployeeRaiseEntryProcessor extends AbstractEntryProcessor<String, Student> {
+        @Override
+        public Object process(Map.Entry<String, Student> entry) {
+            Student value = entry.getValue();
+            value.setTotalMarks((value.getMarksInComp()+value.getMarksInMath())/2);
+            entry.setValue(value);
+            return value;
+        }
     }
 
 }
