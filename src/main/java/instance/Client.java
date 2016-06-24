@@ -28,14 +28,5 @@ public class Client {
         System.out.println(students);
     }
 
-    private static class EmployeeRaiseEntryProcessor extends AbstractEntryProcessor<String, Student> {
-        @Override
-        public Object process(Map.Entry<String, Student> entry) {
-            Student value = entry.getValue();
-            value.setTotalMarks((value.getMarksInComp()+value.getMarksInMath())/2);
-            entry.setValue(value);
-            return value;
-        }
-    }
 
 }
