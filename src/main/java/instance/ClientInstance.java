@@ -12,15 +12,18 @@ import com.hazelcast.core.LifecycleListener;
 public class ClientInstance implements LifecycleListener {
     private static ClientConfig clientConfig ;
     private static HazelcastInstance hazelcastInstance ;
+    private static ClientInstance clientInstance;
 
     static {
         clientConfig = clientConfig();
+        clientInstance = new ClientInstance();
     }
 
     public static HazelcastInstance instance(){
         while (hazelcastInstance == null || !hazelcastInstance.getLifecycleService().isRunning()){
             try{
                 hazelcastInstance = HazelcastClient.newHazelcastClient(clientConfig);
+                hazelcastInstance.getLifecycleService().addLifecycleListener(clientInstance);
             }catch (Exception ex){
                 System.out.println("Exception "+ex.getMessage());
             }
