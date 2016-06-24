@@ -18,6 +18,8 @@ public class Client {
         addZipCodes("Delhi");
         addZipCodes("Kolkata");
         addZipCodes("Mumbai");
+        addZipCodes("Bengaluru");
+        addZipCodes("Chennai");
 
         IMap<String, Address> addressIMap = hazelcastInstance.getMap("cityAddress");
 
