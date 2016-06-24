@@ -48,18 +48,53 @@ public class Client {
     }
 
     private static void update() {
-        IMap<String, Long> map = ClientInstance.instance().getMap(mapName);
-        Long l ;
         for (int i = 0; i < 100; i++) {
-            l = map.get("key");
-            try {
-                Thread.sleep(random.nextInt(10));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            map.put("key", ++l);
+            optimisticLock();
         }
     }
 
+    private static void racy() {
+        IMap<String, Long> map = ClientInstance.instance().getMap(mapName);
+        Long l = map.get("key");
+        try {
+            Thread.sleep(random.nextInt(10));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        map.put("key", ++l);
+    }
 
+
+    private static void pessimisticLock() {
+        IMap<String, Long> map = ClientInstance.instance().getMap(mapName);
+        Long l;
+        try {
+            while(!map.tryLock("key", 1, TimeUnit.SECONDS) /*map.lock("key")*/);
+            l = map.get("key");
+            Thread.sleep(random.nextInt(10));
+            map.put("key", ++l);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            map.unlock("key");
+        }
+    }
+
+    private static void optimisticLock() {
+        IMap<String, Long> map = ClientInstance.instance().getMap(mapName);
+        Long oldVal;
+        Long newVal;
+        while (true) {
+            try {
+                oldVal = map.get("key");
+                Thread.sleep(random.nextInt(10));
+                newVal = oldVal + 1;
+                if (map.replace("key", oldVal, newVal)) {
+                    break;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
