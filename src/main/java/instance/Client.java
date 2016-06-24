@@ -1,32 +1,65 @@
 package instance;
 
 
-import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import data.Student;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 /**
  * Created by bijoy on 15/6/16.
  */
 public class Client {
+    private static Random random = new Random();
+    private static String mapName = System.getProperty("user.name")+"testLock";
     public static void main(String[] args){
-        Random random = new Random(36);
-        HazelcastInstance hazelcastInstance = ClientInstance.instance();
-        IMap<Integer, Student> studentIMap = hazelcastInstance.getMap(System.getProperty("user.name"));
-        Student student;
-        for(int i = 0; i < 30; i++ ){
-            student = new Student("NAME "+i, random.nextInt(100), random.nextInt(100));
-            studentIMap.put(i, student);
+
+        IMap<String, Long> map = ClientInstance.instance().getMap(mapName);
+        map.put("key", 0l);
+        ExecutorService executor = Executors.newFixedThreadPool(15);
+
+        System.out.println("Starting ...");
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i < 15; i++) {
+            executor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    update();
+                }
+            });
         }
-        Collection<Student> students = studentIMap.values();
-        Collections.sort((List)students);
-        System.out.println(students);
+        executor.shutdown();
+
+        try {
+            executor.awaitTermination(2, TimeUnit.MINUTES);
+            System.out.println("---------Complete---------------");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println("Time taken: " + (end - start));
+
+        System.out.println(map.getOrDefault("key", 0l));
     }
+
+    private static void update() {
+        IMap<String, Long> map = ClientInstance.instance().getMap(mapName);
+        Long l ;
+        for (int i = 0; i < 100; i++) {
+            l = map.get("key");
+            try {
+                Thread.sleep(random.nextInt(10));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            map.put("key", ++l);
+        }
+    }
+
 
 }
