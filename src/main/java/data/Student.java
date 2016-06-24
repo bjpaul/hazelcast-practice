@@ -7,23 +7,18 @@ import java.io.Serializable;
  */
 public class Student implements Serializable, Comparable<Student>{
     final static long serialVersionUID = 1l;
-    private int rank;
     private String name;
-    private int totalMarks;
+
+    private int marksInMath;
+    private int marksInComp;
+    private double totalMarks;
 
     public Student(){}
 
-    public Student(String name, int totalMarks) {
+    public Student(String name, int marksInMath, int marksInComp) {
         this.name = name;
-        this.totalMarks = totalMarks;
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
+        this.marksInMath = marksInMath;
+        this.marksInComp = marksInComp;
     }
 
     public String getName() {
@@ -34,20 +29,35 @@ public class Student implements Serializable, Comparable<Student>{
         this.name = name;
     }
 
-    public int getTotalMarks() {
+    public int getMarksInMath() {
+        return marksInMath;
+    }
+
+    public void setMarksInMath(int marksInMath) {
+        this.marksInMath = marksInMath;
+    }
+
+    public int getMarksInComp() {
+        return marksInComp;
+    }
+
+    public void setMarksInComp(int marksInComp) {
+        this.marksInComp = marksInComp;
+    }
+
+    public double getTotalMarks() {
         return totalMarks;
     }
 
-    public void setTotalMarks(int totalMarks) {
+    public void setTotalMarks(double totalMarks) {
         this.totalMarks = totalMarks;
     }
 
-
     @Override
     public int compareTo(Student s) {
-        if(this.getRank() == s.getRank()){
+        if(this.getTotalMarks() == s.getTotalMarks()){
             return 0;
-        }else if(this.getRank() > s.getRank()){
+        }else if(this.getTotalMarks() > s.getTotalMarks()){
             return 1;
         }else {
             return -1;
@@ -56,10 +66,11 @@ public class Student implements Serializable, Comparable<Student>{
 
     @Override
     public String toString() {
-        return "~~~~~~~~~~~~~~~~~~~~~~~" +
-               "\nStudent{" +
-                "rank=" + rank +
-                ", name='" + name + '\'' +
+        return "------------------\n" +
+               "Student{" +
+                "name='" + name + '\'' +
+                ", marksInMath=" + marksInMath +
+                ", marksInComp=" + marksInComp +
                 ", totalMarks=" + totalMarks +
                 "}\n";
     }

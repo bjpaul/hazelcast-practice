@@ -21,7 +21,7 @@ public class Client {
         IMap<Integer, Student> studentIMap = hazelcastInstance.getMap(System.getProperty("user.name"));
         Student student;
         for(int i = 0; i < 30; i++ ){
-            student = new Student("NAME "+i, random.nextInt(100));
+            student = new Student("NAME "+i, random.nextInt(100), random.nextInt(100));
             studentIMap.put(i, student);
         }
         Collection<Student> students = studentIMap.values();
