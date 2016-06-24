@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class Client {
     public static void main(String[] args){
-        Random random = new Random(36);
+        Random random = new Random();
         HazelcastInstance hazelcastInstance = ClientInstance.instance();
         IMap<Integer, Student> studentIMap = hazelcastInstance.getMap(System.getProperty("user.name"));
         Student student;
