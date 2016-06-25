@@ -2,6 +2,8 @@ package instance;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.JoinConfig;
+import com.hazelcast.config.MapConfig;
+import com.hazelcast.config.MapIndexConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
@@ -10,21 +12,22 @@ import com.hazelcast.core.HazelcastInstance;
  */
 public class MemberInstance {
 
-    public static HazelcastInstance memberInstance(){
+    public static HazelcastInstance memberInstance() {
         return ServerInstance.serverInstance();
     }
 
 
-    private static class ServerInstance{
+    private static class ServerInstance {
         private static HazelcastInstance hazelcastInstance;
         private static Config config;
+
         static {
             config = config();
         }
 
 
-        private static HazelcastInstance serverInstance(){
-            if(hazelcastInstance == null){
+        private static HazelcastInstance serverInstance() {
+            if (hazelcastInstance == null) {
                 hazelcastInstance = createInstance();
             }
             return hazelcastInstance;
@@ -35,7 +38,7 @@ public class MemberInstance {
             return hazelcastInstance;
         }
 
-        private static Config serverConfig(){
+        private static Config serverConfig() {
             return config;
         }
 
@@ -46,6 +49,10 @@ public class MemberInstance {
                     .setPassword("june");
             config.getMemberAttributeConfig()
                     .setStringAttribute("user", System.getProperty("user.name"));
+
+            config.getMapConfig("cityAddress")
+                    .addMapIndexConfig(new MapIndexConfig("zipCode", true))
+                    .addMapIndexConfig(new MapIndexConfig("city", true));
             return config;
         }
 

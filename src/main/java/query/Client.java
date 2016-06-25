@@ -18,7 +18,7 @@ public class Client {
     private static HazelcastInstance hazelcastInstance;
     public static void main(String[] args){
         hazelcastInstance = ClientInstance.instance();
-        ExecutorService executor = Executors.newFixedThreadPool(15);
+        ExecutorService executor = Executors.newFixedThreadPool(5);
 
         System.out.println("Starting ...");
 
@@ -44,7 +44,7 @@ public class Client {
             IMap<String, Address> addressIMap = hazelcastInstance.getMap("cityAddress");
             @Override
             public void run() {
-                for(int i = 110001; i < 110111; i++){
+                for(int i = 110001; i < 110511; i++){
                     addressIMap.put(city+" -> "+i, new Address(i, city));
                 }
             }

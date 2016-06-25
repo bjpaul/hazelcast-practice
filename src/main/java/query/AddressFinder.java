@@ -27,11 +27,11 @@ public class AddressFinder {
     public static void main(String[] args) {
 //        predicateSol1();
 //        predicateSol2();
-        predicateSol2(new CitySorter(Order.DESC), 5);
-        predicateSol2(new ZipCodeSorter(Order.ASC),5);
-        predicateSol2(5);
-//        predicateSol3();
-//        conventionalSol3();
+//        predicateSol2(new CitySorter(Order.DESC), 5);
+//        predicateSol2(new ZipCodeSorter(Order.ASC),5);
+//        predicateSol2(5);
+        predicateSol3();
+        conventionalSol3();
     }
 
     public static void predicateSol1() {
