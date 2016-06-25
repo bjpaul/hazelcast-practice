@@ -31,7 +31,7 @@ public class ClientInstance implements LifecycleListener {
     private static ClientConfig clientConfig(){
         ClientConfig clientConfig = new ClientConfig();
         clientConfig.getGroupConfig()
-                .setName("intellimeet")
+                .setName(System.getProperty("user.name"))
                 .setPassword("june");
         clientConfig.getNetworkConfig()
                 .setConnectionAttemptLimit(5) // by default 2
