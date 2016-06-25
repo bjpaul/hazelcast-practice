@@ -1,9 +1,6 @@
 package instance;
 
-import com.hazelcast.config.Config;
-import com.hazelcast.config.JoinConfig;
-import com.hazelcast.config.MapConfig;
-import com.hazelcast.config.MapIndexConfig;
+import com.hazelcast.config.*;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 

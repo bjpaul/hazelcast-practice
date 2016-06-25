@@ -31,7 +31,7 @@ public class AddressFinder {
 //        predicateSol2(new ZipCodeSorter(Order.ASC),5);
 //        predicateSol2(5);
         predicateSol3();
-        conventionalSol3();
+//        conventionalSol3();
     }
 
     public static void predicateSol1() {

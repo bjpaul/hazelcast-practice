@@ -1,12 +1,15 @@
 package query.data;
 
-import java.io.Serializable;
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
+import com.hazelcast.nio.serialization.DataSerializable;
+
+import java.io.IOException;
 
 /**
  * Created by bijoy on 24/6/16.
  */
-public class Address implements Serializable , Comparable<Address>{
-    final static long serialVersionUID = 1l;
+public class Address implements DataSerializable, Comparable<Address>{
 
     private Integer zipCode;
     private String city;
@@ -71,5 +74,19 @@ public class Address implements Serializable , Comparable<Address>{
         }else {
             return this.getCity().compareTo(o.getCity());
         }
+    }
+
+    @Override
+    public void writeData(ObjectDataOutput out) throws IOException {
+        out.writeInt(zipCode);
+        out.writeUTF(city);
+        System.out.println("Writing -> "+this.city+" : "+this.zipCode);
+    }
+
+    @Override
+    public void readData(ObjectDataInput in) throws IOException {
+        this.setZipCode(in.readInt());
+        this.setCity(in.readUTF());
+        System.out.println("Reading -> " + this.city + " : " + this.zipCode);
     }
 }
